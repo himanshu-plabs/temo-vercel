@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.rr-player {
+  box-shadow: none !important;
+}
+h2 {
+  font-size: 24px;
+}
