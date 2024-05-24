@@ -1,24 +1,26 @@
 "use client";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect } from "react";
 import "rrweb-player/dist/style.css";
 import rrwebPlayer from "rrweb-player";
 
-export default function TemoPlayer() {
-  const [recordedEvents, setRecordedEvents] = useState<any[]>([]);
+export default function TemoPlayer({
+  eventsPath,
+}: {
+  eventsPath: string;
+}): JSX.Element {
   const playerRef = useRef<rrwebPlayer | null>(null);
   const playerContainerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const fetchEvents = async () => {
-      const response = await fetch(
-        "https://raw.githubusercontent.com/himanshu-plabs/temo-vercel/main/temos/Product_Hunt_%E2%80%93_The_best_new_products_in_tech_-1716501252392/events.json"
-      );
-      const eventsArray = await response.json();
-      setRecordedEvents(eventsArray);
-    };
-
-    fetchEvents();
-  }, []);
+  const fetchEvents = async (eventsPath: string) => {
+    if (eventsPath) {
+      const response = await fetch(eventsPath);
+      let events = await response.json();
+      console.log(events);
+      replayEvents(events);
+    } else {
+      console.log("No events path provided");
+    }
+  };
 
   const replayEvents = async (eventsArray: any[]) => {
     const playerElement = playerContainerRef.current;
@@ -50,12 +52,9 @@ export default function TemoPlayer() {
   };
 
   useEffect(() => {
-    if (recordedEvents.length > 0) {
-      replayEvents(recordedEvents);
-    }
-  }, [recordedEvents]); // Added dependency to useEffect to re-run when recordedEvents changes
+    fetchEvents(eventsPath);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [eventsPath]);
 
-  return (
-    <div ref={playerContainerRef} style={{ width: "100%", height: "100%" }} />
-  );
+  return <div ref={playerContainerRef} className="w-full h-[70vh]" />;
 }
