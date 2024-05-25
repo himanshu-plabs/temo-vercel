@@ -1,4 +1,5 @@
 import Link from "next/link";
+
 import { list } from "@vercel/blob";
 
 // Reusable components
@@ -75,11 +76,11 @@ async function Sidebar() {
       <div className="overflow-y-auto flex-grow">
         <div className="flex w-full mx-auto px-3 pt-6 pb-8">
           <div className="flex flex-col w-full h-full text-gray-900 text-xl overflow-y-auto mb-24">
-            {temos.map((temo) => (
-              <Link href={`/${temo.name}`} key={temo.id}>
+            {temos?.map((temo) => (
+              <Link href={`/${temo?.name}`} key={temo?.id}>
                 <MenuSection
-                  title={temo.name}
-                  items={[{ title: temo.name, icon: "", description: "" }]}
+                  title={temo?.name}
+                  items={[{ title: temo?.name, icon: "", description: "" }]}
                 />
               </Link>
             ))}
