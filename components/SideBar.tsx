@@ -66,18 +66,31 @@ const MenuSection: React.FC<MenuSectionProps> = ({ title, items }) => {
 async function Sidebar() {
   const { blobs, folders } = await list({ prefix: "temos/", mode: "folded" });
 
+  const temoDetails = blobs?.find((blob) => {
+    blob.pathname.endsWith("temos.json");
+    return blob.url;
+  }) || {
+    url: "",
+  };
+
+  const allTemos = temoDetails?.url
+    ? await fetch(temoDetails?.url).then((res) => res.json())
+    : [];
+
   const temos = folders.map((folder) => ({
     id: folder,
     name: folder?.split("/")[1],
   }));
+
+  const publishedTemos = allTemos?.filter((temo: any) => temo?.isPublished);
 
   return (
     <nav className="h-full bg-white relative flex flex-col border-r border-gray-100 overflow-y-auto">
       <div className="overflow-y-auto flex-grow">
         <div className="flex w-full mx-auto px-3 pt-6 pb-8">
           <div className="flex flex-col w-full h-full text-gray-900 text-xl overflow-y-auto mb-24">
-            {temos?.map((temo) => (
-              <Link href={`/${temo?.name}`} key={temo?.id}>
+            {publishedTemos?.map((temo: any) => (
+              <Link href={`/${temo?.sessionId}`} key={temo?.id}>
                 <MenuSection
                   title={temo?.name}
                   items={[{ title: temo?.name, icon: "", description: "" }]}
