@@ -24,10 +24,6 @@ const fetchFilePaths = async (url: string) => {
   blobs
     ?.sort((a: any, b: any) => a.uploadedAt - b.uploadedAt)
     .forEach((blob: any) => {
-      console.log({
-        pathname: blob.pathname,
-        url: blob.url,
-      });
       if (blob.pathname.endsWith("events.json")) {
         temo.events = blob.url;
       }

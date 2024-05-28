@@ -19,7 +19,7 @@ const MenuSection = ({ title, isSelected = true, items }: any) => {
 // Main component
 async function Sidebar() {
   const { blobs } = await list({ prefix: "temos/", mode: "folded" });
-
+  console.log("blobs", blobs);
   const temoDetails = blobs
     ?.sort((a: any, b: any) => {
       return b?.uploadedAt - a?.uploadedAt;
@@ -28,12 +28,13 @@ async function Sidebar() {
       blob.pathname.endsWith("temos.json");
       return blob.url;
     });
-
+  console.log("temoDetails", temoDetails);
   const allTemos = temoDetails?.url
     ? await fetch(temoDetails?.url).then((res) => res.json())
     : [];
 
   const publishedTemos = allTemos?.filter((temo: any) => temo?.isPublished);
+  console.log("publishedTemos", publishedTemos);
 
   return (
     <nav className="h-full bg-white relative flex flex-col border-r border-gray-100 overflow-y-auto space-y-2">
