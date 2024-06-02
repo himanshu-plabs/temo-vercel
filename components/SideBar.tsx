@@ -1,11 +1,8 @@
-import Link from "next/link";
 import { list } from "@vercel/blob";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-
+import { Accordion } from "@/components/ui/accordion";
+import { allTemosAtom, allCollectionsAtom } from "@/lib/atoms";
+import { useHydrateAtoms } from "jotai/utils";
+import { CollectionMenu } from "./CollectionMenu";
 // Main component
 const Sidebar: React.FC = async () => {
   const fetchTemos = async (): Promise<any> => {
@@ -33,43 +30,24 @@ const Sidebar: React.FC = async () => {
   const { publishedTemos, collections } = await fetchTemos();
 
   return (
-    <nav className="h-full bg-white relative flex flex-col border-r border-gray-100 overflow-y-auto space-y-4 p-4">
-      {Object.entries(collections).map(([key, value], index) => (
-        <Collapsible
-          key={key}
-          defaultOpen={true}
-          className={`${index === 0 ? "" : "border-t border-gray-100"} pt-4`}
-        >
-          <CollapsibleTrigger className="w-full text-left font-semibold text-lg">
-            {value as string}
-          </CollapsibleTrigger>
-          <CollapsibleContent>
-            <nav className="space-y-4 w-full ">
-              {publishedTemos
-                ?.filter((temo: any) => {
-                  return temo?.folderId == Number(key);
-                })
-                ?.map((temo: any) => (
-                  <div
-                    className="hover:bg-gray-100 rounded-md w-full p-2"
-                    key={temo?.id}
-                  >
-                    <Link href={`/${temo?.sessionId}`} key={temo?.id}>
-                      {temo?.title}
-                    </Link>
-                  </div>
-                ))}
-            </nav>
-          </CollapsibleContent>
-        </Collapsible>
-      ))}
+    <nav className="h-full relative flex flex-col border-r border-gray-400/20 overflow-y-auto space-y-4 p-4">
+      <Accordion
+        type="multiple"
+        defaultValue={Object.keys(collections)}
+        className="w-full border-none"
+      >
+        <CollectionMenu
+          collections={collections}
+          publishedTemos={publishedTemos}
+        />
+      </Accordion>
     </nav>
   );
 };
-
-export default Sidebar;
 
 async function getTemos(url: string) {
   const res = await fetch(url, { cache: "no-store" });
   return res.json();
 }
+
+export default Sidebar;
