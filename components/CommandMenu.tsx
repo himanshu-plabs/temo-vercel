@@ -5,7 +5,13 @@ import { useAtom } from "jotai";
 import { commandMenuOpenAtom } from "@/lib/atoms";
 import "../app/raycast.css";
 
-const CommandMenu = () => {
+const CommandMenu = ({
+  publishedTemos,
+  collections,
+}: {
+  publishedTemos: any[];
+  collections: any[];
+}) => {
   const [open, setOpen] = useAtom(commandMenuOpenAtom);
   // Toggle the menu when ⌘K is pressed
   useEffect(() => {
@@ -18,6 +24,7 @@ const CommandMenu = () => {
 
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -30,14 +37,20 @@ const CommandMenu = () => {
       <Command.List>
         <Command.Empty>No results found.</Command.Empty>
 
-        <Command.Group heading="Letters">
-          <Command.Item>a</Command.Item>
-          <Command.Item>b</Command.Item>
-          <Command.Separator />
-          <Command.Item>c</Command.Item>
+        <Command.Group heading="Temos">
+          {publishedTemos?.map((temo: any) => (
+            <Command.Item key={`T-${temo?.id}`}>{temo?.title}</Command.Item>
+          ))}
         </Command.Group>
-
-        <Command.Item>Apple</Command.Item>
+        <Command.Group heading="Collections">
+          {Object.entries(collections)?.map(
+            ([collectionId, collectionName]: [string, string]) => (
+              <Command.Item key={`C-${collectionId}`}>
+                {collectionName}
+              </Command.Item>
+            )
+          )}
+        </Command.Group>
       </Command.List>
     </Command.Dialog>
   );
