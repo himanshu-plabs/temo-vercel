@@ -4,6 +4,7 @@ import { Command } from "cmdk";
 import { useAtom } from "jotai";
 import { commandMenuOpenAtom } from "@/lib/atoms";
 import "../app/raycast.css";
+import { useRouter } from "next/navigation";
 
 const CommandMenu = ({
   publishedTemos,
@@ -12,6 +13,7 @@ const CommandMenu = ({
   publishedTemos: any[];
   collections: any[];
 }) => {
+  const router = useRouter();
   const [open, setOpen] = useAtom(commandMenuOpenAtom);
   // Toggle the menu when ⌘K is pressed
   useEffect(() => {
@@ -39,7 +41,15 @@ const CommandMenu = ({
 
         <Command.Group heading="Temos">
           {publishedTemos?.map((temo: any) => (
-            <Command.Item key={`T-${temo?.id}`}>{temo?.title}</Command.Item>
+            <Command.Item
+              key={`T-${temo?.id}`}
+              onSelect={() => {
+                router.push(`/${temo?.sessionId}`);
+                setOpen(false);
+              }}
+            >
+              {temo?.title}
+            </Command.Item>
           ))}
         </Command.Group>
         <Command.Group heading="Collections">

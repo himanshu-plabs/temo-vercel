@@ -7,7 +7,7 @@ import {
 
 export function CollectionMenu({ collections, publishedTemos }: any) {
   return collections?.map((collection: any, index: any) => (
-    <AccordionItem value={`${collection?.id}`} key={collection?.id}>
+    <AccordionItem value={collection?.id} key={collection?.id}>
       <AccordionTrigger className="w-full text-left font-semibold text-lg">
         {collection?.name}
       </AccordionTrigger>
