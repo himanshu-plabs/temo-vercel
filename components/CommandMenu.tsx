@@ -44,13 +44,11 @@ const CommandMenu = ({
         </Command.Group>
         <Command.Group heading="Collections">
           {collections?.length > 0 &&
-            Object.entries(collections)?.map(
-              ([collectionId, collectionName]: [string, string]) => (
-                <Command.Item key={`C-${collectionId}`}>
-                  {collectionName}
-                </Command.Item>
-              )
-            )}
+            collections?.map((collection: any) => (
+              <Command.Item key={`C-${collection?.id}`}>
+                {collection?.name}
+              </Command.Item>
+            ))}
         </Command.Group>
       </Command.List>
     </Command.Dialog>

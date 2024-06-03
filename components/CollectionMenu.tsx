@@ -6,16 +6,16 @@ import {
 } from "@/components/ui/accordion";
 
 export function CollectionMenu({ collections, publishedTemos }: any) {
-  return Object.entries(collections)?.map(([key, value], index) => (
-    <AccordionItem value={`${key}`} key={key}>
+  return collections?.map((collection: any, index: any) => (
+    <AccordionItem value={`${collection?.id}`} key={collection?.id}>
       <AccordionTrigger className="w-full text-left font-semibold text-lg">
-        {value as string}
+        {collection?.name}
       </AccordionTrigger>
       <AccordionContent>
         <nav className="space-y-4 w-full">
           {publishedTemos
             ?.filter((temo: any) => {
-              return temo?.folderId == Number(key);
+              return temo?.folderId == collection?.id;
             })
             ?.map((temo: any) => (
               <div

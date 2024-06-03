@@ -3,25 +3,23 @@ import { CollectionMenu } from "./CollectionMenu";
 
 const Sidebar = async ({
   publishedTemos = [],
-  collections = {},
+  collections = [],
 }: {
   publishedTemos: any[];
-  collections: { [key: string]: string };
+  collections: any[];
 }) => {
   return (
     <nav className="h-full relative flex flex-col border-r border-gray-400/20 overflow-y-auto space-y-4 p-4">
-      {Object.keys(collections).length > 0 && (
-        <Accordion
-          type="multiple"
-          defaultValue={Object.keys(collections)}
-          className="w-full border-none"
-        >
-          <CollectionMenu
-            collections={collections}
-            publishedTemos={publishedTemos}
-          />
-        </Accordion>
-      )}
+      <Accordion
+        type="multiple"
+        defaultValue={collections?.map((collection: any) => collection?.id)}
+        className="w-full border-none"
+      >
+        <CollectionMenu
+          collections={collections}
+          publishedTemos={publishedTemos}
+        />
+      </Accordion>
     </nav>
   );
 };
