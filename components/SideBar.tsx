@@ -10,16 +10,18 @@ const Sidebar = async ({
 }) => {
   return (
     <nav className="h-full relative flex flex-col border-r border-gray-400/20 overflow-y-auto space-y-4 p-4">
-      <Accordion
-        type="multiple"
-        defaultValue={Object.keys(collections)}
-        className="w-full border-none"
-      >
-        <CollectionMenu
-          collections={collections}
-          publishedTemos={publishedTemos}
-        />
-      </Accordion>
+      {collections?.length > 0 && (
+        <Accordion
+          type="multiple"
+          defaultValue={Object.keys(collections)}
+          className="w-full border-none"
+        >
+          <CollectionMenu
+            collections={collections}
+            publishedTemos={publishedTemos}
+          />
+        </Accordion>
+      )}
     </nav>
   );
 };
