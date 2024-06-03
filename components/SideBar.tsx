@@ -6,11 +6,11 @@ const Sidebar = async ({
   collections,
 }: {
   publishedTemos: any[];
-  collections: any[];
+  collections: { [key: string]: string };
 }) => {
   return (
     <nav className="h-full relative flex flex-col border-r border-gray-400/20 overflow-y-auto space-y-4 p-4">
-      {collections?.length > 0 && (
+      {Object.keys(collections).length > 0 && (
         <Accordion
           type="multiple"
           defaultValue={Object.keys(collections)}

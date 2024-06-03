@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/accordion";
 
 export function CollectionMenu({ collections, publishedTemos }: any) {
-  return Object.entries(collections).map(([key, value], index) => (
+  return Object.entries(collections)?.map(([key, value], index) => (
     <AccordionItem value={`${key}`} key={key}>
       <AccordionTrigger className="w-full text-left font-semibold text-lg">
         {value as string}
