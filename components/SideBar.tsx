@@ -2,8 +2,8 @@ import { Accordion } from "@/components/ui/accordion";
 import { CollectionMenu } from "./CollectionMenu";
 
 const Sidebar = async ({
-  publishedTemos,
-  collections,
+  publishedTemos = [],
+  collections = {},
 }: {
   publishedTemos: any[];
   collections: { [key: string]: string };

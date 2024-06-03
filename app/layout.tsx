@@ -72,7 +72,8 @@ const fetchTemos = async (): Promise<any> => {
     return [];
   }
   const allTemos = await getTemos(temoDetails?.url);
-  const publishedTemos = allTemos?.filter((temo: any) => temo?.isPublished);
+  const publishedTemos =
+    allTemos?.filter((temo: any) => temo?.isPublished) || [];
   let collections = {};
   publishedTemos?.forEach((temo: any) => {
     // @ts-ignore
