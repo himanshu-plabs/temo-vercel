@@ -7,5 +7,5 @@ export const myStore = createStore();
 
 export const commandMenuOpenAtom = atom(false);
 
-export const allTemosAtom = atom([]);
-export const allCollectionsAtom = atom([]);
+export const allTemosAtom = atom<any[]>([]);
+export const allCollectionsAtom = atom<any[]>([]);

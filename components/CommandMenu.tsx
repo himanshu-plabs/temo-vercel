@@ -2,7 +2,11 @@
 import { useEffect } from "react";
 import { Command } from "cmdk";
 import { useAtom } from "jotai";
-import { commandMenuOpenAtom } from "@/lib/atoms";
+import {
+  commandMenuOpenAtom,
+  allTemosAtom,
+  allCollectionsAtom,
+} from "@/lib/atoms";
 import "../app/raycast.css";
 import { useRouter } from "next/navigation";
 
@@ -15,7 +19,15 @@ const CommandMenu = ({
 }) => {
   const router = useRouter();
   const [open, setOpen] = useAtom(commandMenuOpenAtom);
-  // Toggle the menu when ⌘K is pressed
+  const [, setAllTemos] = useAtom(allTemosAtom);
+  const [, setAllCollections] = useAtom(allCollectionsAtom);
+
+  useEffect(() => {
+    setAllTemos(publishedTemos);
+    setAllCollections(collections);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [publishedTemos, collections]);
+
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {

@@ -1,15 +1,14 @@
 import type { Metadata } from "next";
+import { Inter as FontSans } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
-import TopBar from "@/components/TopBar";
 import { cn } from "@/lib/utils";
+import TopBar from "@/components/TopBar";
 import SideBar from "@/components/SideBar";
-import { Inter as FontSans } from "next/font/google";
 import { myStore } from "@/lib/atoms";
 import { Provider } from "jotai";
 import CommandMenu from "@/components/CommandMenu";
-
-import { list } from "@vercel/blob";
+import { fetchTemos } from "@/lib/temo";
 
 export const metadata: Metadata = {
   title: "Temo",
@@ -27,6 +26,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const { publishedTemos, collections } = await fetchTemos();
+
   return (
     <html lang="en">
       <ThemeProvider
@@ -48,55 +48,19 @@ export default async function RootLayout({
             />
             <TopBar />
             <div className="grid grid-cols-12 gap-4 h-[calc(100vh-64px)]">
-              <div className="col-span-2 h-full">
+              <div className="hidden md:block col-span-2 h-full">
                 <SideBar
                   publishedTemos={publishedTemos}
                   collections={collections}
                 />
               </div>
-              <div className="col-span-10 h-full overflow-auto">{children}</div>
+              <div className="col-span-12 md:col-span-10 w-full h-full overflow-auto">
+                {children}
+              </div>
             </div>
           </Provider>
         </body>
       </ThemeProvider>
     </html>
   );
-}
-
-const fetchTemos = async (): Promise<any> => {
-  const { blobs } = await list({ prefix: "temos/", mode: "folded" });
-  const temoDetails = blobs
-    ?.sort((a: any, b: any) => b?.uploadedAt - a?.uploadedAt)
-    ?.find((blob: any) => blob.pathname.endsWith("temos.json"));
-  if (!temoDetails?.url) {
-    return { publishedTemos: [], collections: [] };
-  } else {
-    const allTemos = await getTemos(temoDetails?.url);
-
-    const publishedTemos =
-      allTemos?.filter((temo: any) => temo?.isPublished) || [];
-
-    let collections: {
-      id: string;
-      name: string;
-    }[] = [];
-
-    publishedTemos?.forEach((temo: any) => {
-      if (
-        temo?.folderId &&
-        !collections.find(
-          (collection: any) => collection?.id === temo?.folderId
-        )
-      ) {
-        collections.push({ id: temo?.folderId, name: temo?.folderName });
-      }
-    });
-
-    return { publishedTemos, collections };
-  }
-};
-
-async function getTemos(url: string) {
-  const res = await fetch(url, { cache: "no-store" });
-  return res.json();
 }
