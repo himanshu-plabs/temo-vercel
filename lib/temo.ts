@@ -9,7 +9,6 @@ export const fetchTemos = async (): Promise<any> => {
     return { publishedTemos: [], collections: [] };
   } else {
     const allTemos = await getTemos(temoDetails?.url);
-
     const publishedTemos =
       allTemos?.filter((temo: any) => temo?.isPublished) || [];
 
@@ -29,6 +28,7 @@ export const fetchTemos = async (): Promise<any> => {
       }
     });
 
+    console.log({ publishedTemos, collections });
     return { publishedTemos, collections };
   }
 };
