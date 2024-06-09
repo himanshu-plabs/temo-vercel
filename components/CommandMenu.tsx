@@ -64,14 +64,14 @@ const CommandMenu = ({
             </Command.Item>
           ))}
         </Command.Group>
-        <Command.Group heading="Collections">
+        {/* <Command.Group heading="Collections">
           {collections?.length > 0 &&
             collections?.map((collection: any) => (
               <Command.Item key={`C-${collection?.id}`}>
                 {collection?.name}
               </Command.Item>
             ))}
-        </Command.Group>
+        </Command.Group> */}
       </Command.List>
     </Command.Dialog>
   );

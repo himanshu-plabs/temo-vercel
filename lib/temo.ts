@@ -7,9 +7,10 @@ export const fetchTemos = async (): Promise<any> => {
       ?.sort((a: any, b: any) => b?.uploadedAt - a?.uploadedAt)
       ?.find((blob: any) => blob.pathname.endsWith("temos.json"));
     if (!temoDetails?.url) {
-      return { publishedTemos: [], collections: [] };
+      return { collections: [], temos: [], publishedTemos: [] };
     } else {
       const allTemos = await getTemos(temoDetails?.url);
+
       const publishedTemos =
         allTemos?.filter((temo: any) => temo?.isPublished) || [];
 
@@ -17,6 +18,8 @@ export const fetchTemos = async (): Promise<any> => {
         id: string;
         name: string;
       }[] = [];
+
+      let temos: any[] = [];
 
       publishedTemos?.forEach((temo: any) => {
         if (
@@ -27,14 +30,16 @@ export const fetchTemos = async (): Promise<any> => {
         ) {
           collections.push({ id: temo?.folderId, name: temo?.folderName });
         }
+        if (!temo?.folderId) {
+          temos.push(temo);
+        }
       });
-
-      console.log({ publishedTemos, collections });
-      return { publishedTemos, collections };
+      console.log({ collections, temos, publishedTemos });
+      return { collections, temos, publishedTemos };
     }
   } catch (error) {
     console.error(error);
-    return { publishedTemos: [], collections: [] };
+    return { collections: [], temos: [], publishedTemos: [] };
   }
 };
 

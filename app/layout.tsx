@@ -25,7 +25,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { publishedTemos, collections } = await fetchTemos();
+  const { temos, collections, publishedTemos } = await fetchTemos();
 
   return (
     <html lang="en">
@@ -50,6 +50,7 @@ export default async function RootLayout({
             <div className="grid grid-cols-12 gap-4 h-[calc(100vh-64px)]">
               <div className="hidden md:block col-span-2 h-full">
                 <SideBar
+                  temos={temos}
                   publishedTemos={publishedTemos}
                   collections={collections}
                 />

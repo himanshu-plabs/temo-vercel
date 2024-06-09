@@ -16,14 +16,14 @@ export function CollectionMenu({ collections, publishedTemos }: any) {
         {collection?.name}
       </AccordionTrigger>
       <AccordionContent>
-        <nav className="space-y-1 w-full">
+        <nav className="space-y-4 w-full">
           {publishedTemos
             ?.filter((temo: any) => {
               return temo?.folderId == collection?.id;
             })
             ?.map((temo: any) => (
               <div
-                className="hover:bg-primary/20 w-full p-1 rounded-md"
+                className="hover:bg-primary/20 w-full rounded-md"
                 key={temo?.id}
               >
                 <Link href={`/${temo?.sessionId}`} key={temo?.id}>
