@@ -6,8 +6,19 @@ export const fetchTemos = async (): Promise<any> => {
     const temoDetails = blobs
       ?.sort((a: any, b: any) => b?.uploadedAt - a?.uploadedAt)
       ?.find((blob: any) => blob.pathname.endsWith("temos.json"));
+    const brandFile = blobs
+      ?.sort((a: any, b: any) => b?.uploadedAt - a?.uploadedAt)
+      ?.find((blob: any) => blob.pathname.endsWith("brand.json"));
+
+    const brandDetails = brandFile?.url ? await getTemos(brandFile?.url) : null;
+
     if (!temoDetails?.url) {
-      return { collections: [], temos: [], publishedTemos: [] };
+      return {
+        collections: [],
+        temos: [],
+        publishedTemos: [],
+        brandDetails: null,
+      };
     } else {
       const allTemos = await getTemos(temoDetails?.url);
 
@@ -34,12 +45,17 @@ export const fetchTemos = async (): Promise<any> => {
           temos.push(temo);
         }
       });
-      console.log({ collections, temos, publishedTemos });
-      return { collections, temos, publishedTemos };
+      console.log({ collections, temos, publishedTemos, brandDetails });
+      return { collections, temos, publishedTemos, brandDetails };
     }
   } catch (error) {
     console.error(error);
-    return { collections: [], temos: [], publishedTemos: [] };
+    return {
+      collections: [],
+      temos: [],
+      publishedTemos: [],
+      brandDetails: null,
+    };
   }
 };
 
@@ -52,3 +68,16 @@ async function getTemos(url: string) {
     return [];
   }
 }
+
+export const fetchBrand = async (brandId: string): Promise<any> => {
+  try {
+    const { blobs } = await list({ prefix: "temos/", mode: "folded" });
+    const temoDetails = blobs
+      ?.sort((a: any, b: any) => b?.uploadedAt - a?.uploadedAt)
+      ?.find((temo: any) => temo?.brandId === brandId);
+    return temoDetails;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};

@@ -10,25 +10,30 @@ import { Provider } from "jotai";
 import CommandMenu from "@/components/CommandMenu";
 import { fetchTemos } from "@/lib/temo";
 
-export const metadata: Metadata = {
-  title: "Temo",
-  description: "Temo",
-};
-
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
 });
+
+export const metadata: Metadata = {
+  title: "Temo",
+  description: "Temo",
+};
 
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { temos, collections, publishedTemos } = await fetchTemos();
+  const { temos, collections, publishedTemos, brandDetails } =
+    await fetchTemos();
 
   return (
     <html lang="en">
+      <head>
+        <title>{brandDetails?.brandName || "Temo"}</title>
+        <meta name="description" content={brandDetails?.brandName || "Temo"} />
+      </head>
       <ThemeProvider
         attribute="class"
         defaultTheme="system"
@@ -46,7 +51,7 @@ export default async function RootLayout({
               publishedTemos={publishedTemos}
               collections={collections}
             />
-            <TopBar />
+            <TopBar brandDetails={brandDetails} />
             <div className="grid grid-cols-12 gap-4 h-[calc(100vh-64px)]">
               <div className="hidden md:block col-span-2 h-full">
                 <SideBar
